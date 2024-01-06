@@ -1,3 +1,4 @@
+Right now the API only works on localhost but waiting to get access to NewsCatcherApi so that i can deploy the application.
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
