@@ -10,6 +10,7 @@ import LoadingBar from 'react-top-loading-bar'
 
 export default function App() {
   const apiKey = process.env.REACT_APP_NEWS_API;
+  console.log(apiKey)
   const [progress, setProgress] = useState(0)
  
   const setProgressBar=(progress)=>{
