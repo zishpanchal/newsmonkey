@@ -27,13 +27,13 @@ export default function Navbar() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link link-light" to="/general">
-                  General
+                <Link className="nav-link link-light" to="/gaming">
+                  Gaming
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link link-success" to="/business">
-                  Business
+                <Link className="nav-link link-success" to="/food">
+                Food
                 </Link>
               </li>
               <li className="nav-item">
@@ -42,13 +42,13 @@ export default function Navbar() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link link-danger" to="/health">
-                  Health
+                <Link className="nav-link link-danger" to="/politics">
+                  Politics
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link link-warning" to="/science">
-                  Science
+                <Link className="nav-link link-warning" to="/travel">
+                Travel
                 </Link>
               </li>
               <li className="nav-item">

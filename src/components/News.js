@@ -14,28 +14,41 @@ export default function News(props) {
 
  const updateNews= async ()=>{
     
-  const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&pageSize=${props.pageSize}&page=${page}`;
+  const url = `https://api.newscatcherapi.com/v2/latest_headlines?not_sources=prnewswire.com&lang=en&when=24h&ranked_only&countries=${props.country}&topic=${props.category}&page_size=${props.pageSize}&page=${page}`;
     props.progress(10);
-    let data = await fetch(url);
+    let data = await fetch(url,
+      {
+        method:"GET",
+        headers:{
+          "x-api-key": props.apiKey
+        }
+      });
     props.progress(50);
     let parsedData = await data.json();
     setArticles(parsedData.articles);
     props.progress(80);
-    setTotalResults(parsedData.totalResults);
+    setTotalResults(parsedData.total_hits);
     props.progress(100);
   };
   
   useEffect(()=>{
     document.title = (props.category.charAt(0).toUpperCase() + props.category.slice(1)+' - NewsMonkey');
+    // eslint-disable-next-line
     updateNews()}, [])
  
   const fetchMoreData = async () => {
-    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&pageSize=${props.pageSize}&page=${page+1}`;
+    const url = `https://api.newscatcherapi.com/v2/latest_headlines?not_sources=prnewswire.com&lang=en&when=24h&ranked_only&countries=${props.country}&topic=${props.category}&page_size=${props.pageSize}&page=${page+1}`;
     setPage(page+1)
-    let data = await fetch(url);
+    let data = await fetch(url,{
+      method:"GET",
+      headers:{
+        "x-api-key": props.apiKey,
+        "Access-Control-Allow-Origin":"*"
+      }
+    });
     let parsedData = await data.json();
     setArticles(articles.concat(parsedData.articles))
-    setTotalResults(parsedData.totalResults)
+    setTotalResults(parsedData.total_hits)
     }
     return (
       <>
@@ -49,18 +62,18 @@ export default function News(props) {
             <div className="container ">
         <div className="row mx-lg-5">
           {( 
-            articles.filter((elem) => elem.urlToImage !== null).map((elem, index) => {
+            articles.filter((elem) => elem.media !== null).toSorted((a, b) => a.rank - b.rank).map((elem, index) => {
                 return (
                   <div className="col-lg-4 my-2" key={index}>
                     <NewsItem
-                      newsUrl={elem.url}
+                      newsUrl={elem.link}
                       title={elem.title}
-                      description={elem.description}
-                      imageUrl={elem.urlToImage}
+                      description={elem.excerpt}
+                      imageUrl={elem.media}
                       author={elem.author}
-                      date={elem.publishedAt}
-                      source={elem.source.name}
-                      category={props.category}
+                      date={elem.published_date}
+                      source={elem.clean_url}
+                      category={props.topic}
                       style={props.color}
                     />
                   </div>
