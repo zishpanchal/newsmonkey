@@ -20,7 +20,7 @@ export default function News(props) {
       {
         method:"GET",
         headers:{
-          "x-api-key": props.apiKey
+          "x-api-key": props.apiKey,
         }
       });
     props.progress(50);
