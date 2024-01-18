@@ -62,7 +62,7 @@ export default function News(props) {
             <div className="container ">
         <div className="row mx-lg-5">
           {( 
-            articles.filter((elem) => elem.media !== null).toSorted((a, b) => a.rank - b.rank).map((elem, index) => {
+            articles.map((elem, index) => {
                 return (
                   <div className="col-lg-4 my-2" key={index}>
                     <NewsItem
