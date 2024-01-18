@@ -21,6 +21,7 @@ export default function News(props) {
         method:"GET",
         headers:{
           "x-api-key": props.apiKey,
+          "Access-Control-Allow-Origin":"*"
         }
       });
     props.progress(50);
