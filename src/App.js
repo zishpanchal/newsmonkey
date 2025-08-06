@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import News from './components/News'
 import {
@@ -7,15 +7,28 @@ import {
   Routes,
 } from "react-router-dom";
 import LoadingBar from 'react-top-loading-bar'
+import { ChakraProvider, defaultSystem, Box } from '@chakra-ui/react'
+import { ThemeProvider, useTheme } from './contexts/ThemeContext'
+import AIService from './services/AIService'
 
-export default function App() {
+function AppContent() {
   const apiKey = process.env.REACT_APP_NEWS_API;
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState(0);
+  const { theme } = useTheme();
  
   const setProgressBar=(progress)=>{
     setProgress(progress)
   }
-    return (
+
+  // Test Grok API connection on app load (for development)
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      AIService.testConnection();
+    }
+  }, []);
+
+  return (
+    <Box bg={theme.bg} minH="100vh">
       <BrowserRouter >
         <Navbar/>
         <LoadingBar
@@ -23,18 +36,27 @@ export default function App() {
         progress={progress}
       />
         <Routes>
-          <Route exact path="/" element={<News progress={setProgressBar} key='world'  country='US,CA' category='world' apiKey={apiKey} color='dark' />} />
-          <Route exact path="/gaming" element={<News progress={setProgressBar} key='gaming'  country='US,CA' category='gaming' apiKey={apiKey}color='dark' />} />
-          <Route exact path="/food" element={<News progress={setProgressBar} key='food'  country='US,CA' category='food' apiKey={apiKey}color='success' />} />
-          <Route exact path="/entertainment" element={<News progress={setProgressBar} key='entertainment'  country='US,CA' category='entertainment' apiKey={apiKey}color='primary' />} />
-          <Route exact path="/politics" element={<News progress={setProgressBar} key='politics'  country='US,CA' category='politics' apiKey={apiKey}color='danger' />} />
-          <Route exact path="/travel" element={<News progress={setProgressBar} key='travel'  country='US,CA' category='travel' apiKey={apiKey}color='warning' />} />
-          <Route exact path="/sports" element={<News progress={setProgressBar} key='sport'  country='US,CA' category='sport' apiKey={apiKey}color='info' />} />
-          <Route exact path="/technology" element={<News progress={setProgressBar} key='tech'  country='US,CA' category='tech' apiKey={apiKey}color='secondary' />} />
+          <Route exact path="/" element={<News progress={setProgressBar} key='general'  country='us' category='general' apiKey={apiKey} color='dark' />} />
+          <Route exact path="/business" element={<News progress={setProgressBar} key='business'  country='us' category='business' apiKey={apiKey} color='dark' />} />
+          <Route exact path="/health" element={<News progress={setProgressBar} key='health'  country='us' category='health' apiKey={apiKey} color='success' />} />
+          <Route exact path="/entertainment" element={<News progress={setProgressBar} key='entertainment'  country='us' category='entertainment' apiKey={apiKey} color='primary' />} />
+          <Route exact path="/science" element={<News progress={setProgressBar} key='science'  country='us' category='science' apiKey={apiKey} color='danger' />} />
+          <Route exact path="/sports" element={<News progress={setProgressBar} key='sports'  country='us' category='sports' apiKey={apiKey} color='info' />} />
+          <Route exact path="/technology" element={<News progress={setProgressBar} key='technology'  country='us' category='technology' apiKey={apiKey} color='secondary' />} />
         </Routes>
       </BrowserRouter>
-      
-    )
-  }
+    </Box>
+  );
+}
+
+export default function App() {
+  return (
+    <ChakraProvider value={defaultSystem}>
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
+    </ChakraProvider>
+  );
+}
 
 
