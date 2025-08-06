@@ -6,9 +6,17 @@ NewsMonkey is a cutting-edge React-based news application that revolutionizes ho
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
+![Chakra UI](https://img.shields.io/badge/Chakra--UI-319795?style=for-the-badge&logo=chakra-ui&logoColor=white)
 ![NewsAPI](https://img.shields.io/badge/NewsAPI-FF6B35?style=for-the-badge&logo=rss&logoColor=white)
 ![Grok](https://img.shields.io/badge/Grok_AI-000000?style=for-the-badge&logo=openai&logoColor=white)
+
+## 📸 Screenshots
+
+<p align="center">
+  <img src="Screenshots/image1.png" width="45%" alt="Image 1">
+  <img src="Screenshots/image2.png" width="45%" alt="Image 2">
+  <img src="Screenshots/image3.png" width="45%" alt="Image 2">
+</p>
 
 ## 🌟 Features
 
@@ -67,13 +75,6 @@ NewsMonkey is a cutting-edge React-based news application that revolutionizes ho
    
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## 📸 Screenshots
-
-<p align="center">
-  <img src="Screenshots/image1.png" width="45%" alt="Image 1">
-  <img src="Screenshots/image2.png" width="45%" alt="Image 2">
-  <img src="Screenshots/image3.png" width="45%" alt="Image 2">
-</p>
 
 ## 🎯 Usage
 
