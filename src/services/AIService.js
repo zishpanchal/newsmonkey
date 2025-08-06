@@ -43,20 +43,26 @@ Response format (copy exactly):
 
       if (!response.ok) {
         const errorText = await response.text();
+        console.error('Grok API Error Response:', response.status, errorText);
         throw new Error(`Grok API error: ${response.status} - ${errorText}`);
       }
 
       const data = await response.json();
+      console.log('🤖 Grok API Full Response:', data);
       
       if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+        console.error('❌ Unexpected response structure:', data);
         return 'AI summary unavailable - unexpected response format';
       }
       
       const message = data.choices[0].message;
       let content = message.content || '';
       
+      console.log('🔍 Raw content:', content);
+      
       // Clean up any template placeholders or extra explanations
       if (content.includes('[your spicy Gen-Z headline here]')) {
+        console.log('⚠️ Model returned template format, trying again...');
         return 'AI is being a bit template-y, try clicking again! 🤖';
       }
       
@@ -76,136 +82,39 @@ Response format (copy exactly):
         }
       }
       
+      console.log('✅ Processed content:', content);
+      
       if (!content || content.length < 20) {
+        console.error('❌ Content too short or empty:', content);
         return 'AI gave a weird response, try again! 🤷‍♀️';
       }
       
       return content;
       
     } catch (error) {
+      console.error('Grok API Error:', error);
       return 'Oops! 🤖 AI summary temporarily unavailable. Try again later!';
-    }
-  }
-
-  async getGenZImpactScore(title, description) {
-    if (!this.apiKey) {
-      throw new Error('Grok API key not configured');
-    }
-
-    try {
-      const response = await fetch(`${this.baseUrl}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`,
-        },
-        body: JSON.stringify({
-          model: 'grok-3',
-          messages: [
-            {
-              role: 'system',
-              content: `You rate how much news impacts Gen-Z (18-25 year olds). Reply ONLY with the score format. No explanations.`
-            },
-            {
-              role: 'user',
-              content: `Rate this news impact on Gen-Z (18-25):
-
-Title: ${title}
-Description: ${description}
-
-Response format:
-📊 Impact Score: [1-10]/10
-💡 Why: [1 sentence explaining the score]
-
-1-3 = Barely affects Gen-Z
-4-6 = Moderate impact 
-7-8 = High impact
-9-10 = Major life impact`
-            }
-          ],
-          max_tokens: 100,
-          temperature: 0.3
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`Grok API error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const content = data.choices[0]?.message?.content || '';
-      
-      return content || 'Impact score unavailable';
-      
-    } catch (error) {
-      return '📊 Impact Score: ?/10\n💡 Why: AI is taking a coffee break ☕';
-    }
-  }
-
-  async explainLikeImFive(title, description) {
-    if (!this.apiKey) {
-      throw new Error('Grok API key not configured');
-    }
-
-    try {
-      const response = await fetch(`${this.baseUrl}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`,
-        },
-        body: JSON.stringify({
-          model: 'grok-3',
-          messages: [
-            {
-              role: 'system',
-              content: `You explain complex news like you're talking to a 5-year-old. Use simple words, analogies, and emojis. No jargon or complex terms.`
-            },
-            {
-              role: 'user',
-              content: `Explain this news like I'm 5 years old:
-
-Title: ${title}
-Description: ${description}
-
-Use:
-- Simple words only
-- Fun analogies (like comparing to playground, toys, etc)
-- Emojis to make it fun
-- 2-3 sentences max
-
-Make it easy to understand but accurate!`
-            }
-          ],
-          max_tokens: 150,
-          temperature: 0.7
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`Grok API error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const content = data.choices[0]?.message?.content || '';
-      
-      return content || 'ELI5 explanation unavailable';
-      
-    } catch (error) {
-      return 'Hmm, this is like when your toy breaks and you need a grown-up to explain what happened! 🧸 Try again later!';
     }
   }
 
   // Test function to verify API connection
   async testConnection() {
     try {
+      console.log('🔄 Testing Grok API with sample data...');
       const testSummary = await this.summarizeForGenZ(
         "Federal Reserve Raises Interest Rates",
         "The Federal Reserve announced a 0.25 percentage point increase in interest rates to combat inflation."
       );
       
-      return testSummary && !testSummary.includes('unavailable');
+      if (testSummary && !testSummary.includes('unavailable')) {
+        console.log('✅ Grok API Test Success! Response:', testSummary);
+        return true;
+      } else {
+        console.log('⚠️ Grok API Test returned fallback message:', testSummary);
+        return false;
+      }
     } catch (error) {
+      console.error('❌ Grok API Test Failed:', error);
       return false;
     }
   }
