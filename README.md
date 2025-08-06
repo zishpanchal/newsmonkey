@@ -70,7 +70,7 @@ NewsMonkey is a cutting-edge React-based news application that revolutionizes ho
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="image1.png" width="45%" alt="Image 1">
+  <img src="Sreenshots/image1.png" width="45%" alt="Image 1">
   <img src="image2.png" width="45%" alt="Image 2">
 </p>
 
